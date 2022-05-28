@@ -7,7 +7,7 @@ import numpy as np
 import tensorflow as tf
 #import torch
 #from torch.autograd import Variable
-%tensorflow_version 1.x
+%tensorflow_version 2.9.1
 
 
 import config
@@ -135,7 +135,7 @@ class Model(object):
         #tf.reset_default_graph()
         tf.compat.v1.reset_default_graph()
         #tf.set_random_seed(999)
-        tf.random.set_seed()
+        tf.random.set_seed(1234)
         
         self.averages = []
 
