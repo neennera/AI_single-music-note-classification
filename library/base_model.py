@@ -5,6 +5,10 @@ from time import time
 import numpy as np
 
 import tensorflow as tf
+#import torch
+#from torch.autograd import Variable
+%tensorflow_version 1.x
+
 
 import config
 
@@ -126,11 +130,13 @@ class Model(object):
             return wavg
         else:
             return None
-
+            
     def define_graph(self):
-        tf.reset_default_graph()
-        tf.set_random_seed(999)
-
+        #tf.reset_default_graph()
+        tf.compat.v1.reset_default_graph()
+        #tf.set_random_seed(999)
+        tf.random.set_seed()
+        
         self.averages = []
 
         with tf.variable_scope('data_queue'):

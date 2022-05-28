@@ -1,6 +1,7 @@
 # data location
 records_path = 'data/records/'
-labels_path = 'data/labels_mirex.pckl'
+#labels_path = 'data/labels_mirex.pckl'
+labels_path = "processed_dataset/"
 tmp = 'data/'
 
 # number of gpus on this system (for scheduling)
