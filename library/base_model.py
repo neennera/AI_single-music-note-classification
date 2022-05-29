@@ -244,11 +244,11 @@ class Model(object):
                 fd = os.open(config.records_path + record, os.O_RDONLY)
                 #buff = mmap.mmap(fd, 0, mmap.MAP_SHARED, mmap.PROT_READ)
                 buff = mmap.mmap(fd, 0, access=mmap.ACCESS_READ)
-                self.data[int(record[:-3])] = (buff, len(buff)/sz_float)
+                self.data[int(record[:-7])] = (buff, len(buff)/sz_float)
                 self.files.append(fd)
             else:
                 f = open(config.records_path + record)
-                self.data[int(record[:-4])] = (config.records_path + record,os.fstat(f,fileno()).st_size/sz_float)
+                self.data[int(record[:-7])] = (config.records_path + record,os.fstat(f,fileno()).st_size/sz_float)
                 f.close()
         
         self.coord = tf.train.Coordinator()
