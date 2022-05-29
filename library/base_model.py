@@ -239,10 +239,10 @@ class Model(object):
         # map the dataset
         self.data = dict()
         self.files = []
-        for record in os.listdir(config.records_path):
+        feat_path=os.listdir(config.records_path)
+        for record in feat_path :
             if self.mmap:
                 fd = os.open(config.records_path + record, os.O_RDONLY)
-                #buff = mmap.mmap(fd, 0, mmap.MAP_SHARED, mmap.PROT_READ)
                 buff = mmap.mmap(fd, 0, access=mmap.ACCESS_READ)
                 self.data[int(record[:-7])] = (buff, len(buff)/sz_float)
                 self.files.append(fd)
