@@ -4,10 +4,15 @@ import pickle
 from time import time
 import numpy as np
 
+'''
 import tensorflow as tf
-#import torch
-#from torch.autograd import Variable
-%tensorflow_version 2.9.1
+import torch
+from torch.autograd import Variable
+%tensorflow_version 2.9
+'''
+
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 
 
 import config
@@ -132,16 +137,18 @@ class Model(object):
             return None
             
     def define_graph(self):
-        #tf.reset_default_graph()
-        tf.compat.v1.reset_default_graph()
-        #tf.set_random_seed(999)
-        tf.random.set_seed(1234)
-        
-        self.averages = []
+        #import tensorflow as tf
+        #tf.disable_v2_behavior()
 
-        with tf.variable_scope('data_queue'):
-            self.xb = tf.placeholder(tf.float32, shape=[None,1,self.window+(self.out-1)*self.stride,1])
-            self.yb = tf.placeholder(tf.float32, shape=[None, self.out,self.m])
+        tf.compat.v1.reset_default_graph()
+        #tf.compat.v1.reset_default_graph()
+        tf.compat.v1.set_random_seed(999)
+
+        self.averages=[]
+        
+        with tf.compat.v1.variable_scope('data_queue', reuse=True):
+            self.xb = tf.compat.v1.placeholder(tf.float32, shape=[None,1,self.window+(self.out-1)*self.stride,1])
+            self.yb = tf.compat.v1.placeholder(tf.float32, shape=[None, self.out,self.m])
     
             self.queue = tf.FIFOQueue(capacity=20*self.batch_size,
                                  dtypes=[tf.float32,tf.float32],
@@ -149,9 +156,9 @@ class Model(object):
             self.enqueue_op = self.queue.enqueue_many([self.xb, self.yb])
             self.xq, self.yq = self.queue.dequeue_many(self.batch_size)
 
-        with tf.variable_scope('direct_data'):
-            self.xd = tf.placeholder(tf.float32, shape=[None,1,self.window,1])
-            self.yd = tf.placeholder(tf.float32, shape=[None, self.m])
+        with tf.compat.v1.variable_scope('direct_data'):
+            self.xd = tf.compat.v1.placeholder(tf.float32, shape=[None,1,self.window,1])
+            self.yd = tf.compat.v1.placeholder(tf.float32, shape=[None, self.m])
 
         # subclasses must define these quantities
         self.y_direct = None       # model predictions with direct evaluation
@@ -275,6 +282,7 @@ class Model(object):
 
     def restore_checkpoint(self):
         for stat in self.stats:
+            print(self.cp,stat)
             with open(self.cp + stat + '.npy', 'rb') as f:
                 self.stats[stat][2] = list(np.load(f))
 
