@@ -242,8 +242,9 @@ class Model(object):
         for record in os.listdir(config.records_path):
             if self.mmap:
                 fd = os.open(config.records_path + record, os.O_RDONLY)
-                buff = mmap.mmap(fd, 0, mmap.MAP_SHARED, mmap.PROT_READ)
-                self.data[int(record[:-4])] = (buff, len(buff)/sz_float)
+                #buff = mmap.mmap(fd, 0, mmap.MAP_SHARED, mmap.PROT_READ)
+                buff = mmap.mmap(fd, 0, access=mmap.ACCESS_READ)
+                self.data[int(record[:-3])] = (buff, len(buff)/sz_float)
                 self.files.append(fd)
             else:
                 f = open(config.records_path + record)
@@ -282,12 +283,11 @@ class Model(object):
 
     def restore_checkpoint(self):
         for stat in self.stats:
-            print(self.cp,stat)
-            with open(self.cp + stat + '.npy', 'rb') as f:
+            with open('D:/AI_pitch_Data/weights/'+self.cp + stat + '.npy', 'rb') as f:
                 self.stats[stat][2] = list(np.load(f))
 
         for name, w in self.weights.items():
-            with open(self.cp + name + '.npy','rb') as f:
+            with open('D:/AI_pitch_Data/weights/'+self.cp + name + '.npy','rb') as f:
                 self.sess.run(w.assign(np.load(f)))
 
         if len(self.stats['iter'][2]) > 0:

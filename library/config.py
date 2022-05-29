@@ -1,5 +1,6 @@
 # data location
-records_path = 'data/records/'
+#records_path = 'data/records/'
+records_path = 'processed_dataset/feat/'
 #labels_path = 'data/labels_mirex.pckl'
 labels_path = "processed_dataset/"
 tmp = 'data/'
