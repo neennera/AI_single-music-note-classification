@@ -2,15 +2,15 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import pickle
-import torchaudio
 import torch
 from torch import nn
+import torchaudio
 #import program
 import pickle
 import copyreg
 #from pydub import AudioSegment
 import os
-import tempfile
+#import tempfile
 
 
 class Model(nn.Module):
