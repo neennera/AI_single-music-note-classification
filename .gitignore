@@ -2,3 +2,6 @@ thai2transformers/
 processed_dataset/
 weights/
 processed/
+temp/
+/notemodel.pkl
+/model/model.sav
