@@ -1,2 +1,2 @@
-torchaudio==0.12.0
-program==0.0.4
+torchaudio
+program
