@@ -14,6 +14,32 @@ import os
 #import tempfile
 
 #warnings.filterwarnings("ignore")
+import requests
+URL = "https://drive.google.com/uc?export=download&id=1zAxmKxO5vov1EkX2xRzXrli0D3340hNh"
+URL = "https://www.dropbox.com/s/cm5aoseuv3r4hvz/notemodel.pkl?dl=1"
+
+
+def download_file_from_google_drive(id):
+
+    session = requests.Session()
+
+    response = session.get(URL, params = { 'id' : id }, stream = True)
+    token = get_confirm_token(response)
+
+    if token:
+        params = { 'id' : id, 'confirm' : token }
+        response = session.get(URL, params = params, stream = True)
+
+def get_confirm_token(response):
+    for key, value in response.cookies.items():
+        if key.startswith('download_warning'):
+            return value
+
+    return None
+
+
+#response = download_file_from_google_drive(file_id, destination)
+response = requests.get(URL, stream = True)
 
 class Model(nn.Module):
     def __init__(self, feat_dim=256):
@@ -110,8 +136,11 @@ model = Model()
 model = copyreg.pickle(MyClass, pickle_MyClass)
 
 
-with open('notemodel.pkl', 'rb') as f :
-    model = pickle.load(f)
+#with open('notemodel.pkl', 'rb') as f :
+#    model = pickle.load(f)
+st.write(response)
+st.write(response.content)
+model = pickle.load(response.content)
 class_mapping = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"]
 
 st.set_page_config(page_title="Note Prediction")

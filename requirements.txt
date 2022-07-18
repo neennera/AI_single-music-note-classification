@@ -1,3 +1,4 @@
 streamlit
 torchaudio
 program
+requests
