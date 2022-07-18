@@ -8,12 +8,12 @@ import torchaudio
 import program
 import pickle
 import copyreg
-import warnings
+#import warnings
 #from pydub import AudioSegment
 import os
 #import tempfile
 
-warnings.filterwarnings("ignore")
+#warnings.filterwarnings("ignore")
 
 class Model(nn.Module):
     def __init__(self, feat_dim=256):
